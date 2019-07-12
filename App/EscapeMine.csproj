@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Infrastructure\Helper.csproj" />
     <ProjectReference Include="..\Service\Service.csproj" />
   </ItemGroup>
 

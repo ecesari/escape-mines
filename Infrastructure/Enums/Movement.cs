@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Infrastructure.Enums
+namespace Helper.Enums
 {
     public enum Movement
     {

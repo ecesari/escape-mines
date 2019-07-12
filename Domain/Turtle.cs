@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Infrastructure.Enums;
+using Helper.Enums;
 
 namespace Domain
 {

@@ -1,6 +1,7 @@
 ﻿using System;
 using Domain;
-using Infrastructure.Enums;
+using Helper.Enums;
+using Helper.Helpers;
 
 namespace Service
 {
@@ -9,10 +10,22 @@ namespace Service
         Turtle Create(Coordinate turtleStartingPosition, Orientation turtleOrientation);
         void Move(Movement movement);
         void Move(Movement movement,Turtle turtle);
+        void RunInitial(string command);
+        void Move(string command);
+        string GetStatus();
     }
 
     public class TurtleService:ITurtleService
     {
+        private readonly ICoordinateService _coordinateService;
+        private readonly Turtle _turtle;
+
+        public TurtleService(ICoordinateService coordinateService, Turtle turtle)
+        {
+            _coordinateService = coordinateService;
+            _turtle = turtle;
+        }
+
         public Turtle Create(Coordinate turtleStartingPosition, Orientation turtleOrientation)
         {
             return new Turtle
@@ -55,6 +68,29 @@ namespace Service
                 default:
                     throw new ArgumentOutOfRangeException(nameof(movement), movement, null);
             }
+        }
+
+        public void RunInitial(string command)
+        {
+            //add validation
+            var turtleStartingCoordinate = _coordinateService.Create(command[0], command[1]);
+            var turtleOrientation = EnumHelper<Orientation>.GetValueFromName(command[2].ToString());
+            Create(turtleStartingCoordinate, turtleOrientation);
+        }
+
+        public void Move(string command)
+        {
+
+            foreach (var move in command)
+            {
+                var movement = EnumHelper<Movement>.GetValueFromName(move.ToString());
+                Move(movement, _turtle);
+            }
+        }
+
+        public string GetStatus()
+        {
+            return string.Empty;
         }
 
 

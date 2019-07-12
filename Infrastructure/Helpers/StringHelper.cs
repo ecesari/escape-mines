@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Helper
+namespace Helper.Helpers
 {
     public static class StringHelper
     {

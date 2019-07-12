@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 
-namespace Infrastructure.Helper
+namespace Helper.Helpers
 {
     public static class EnumHelper<T>
     {
