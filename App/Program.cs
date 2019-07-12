@@ -60,7 +60,8 @@ namespace EscapeMine
 
             foreach (var move in moves)
             {
-                //turtleService.Move(move);
+                var movement = EnumHelper<Movement>.GetValueFromName(move.ToString());
+                turtleService.Move(movement,turtle);
             }
 
 
