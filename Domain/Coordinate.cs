@@ -4,8 +4,9 @@ using System.Text;
 
 namespace Domain
 {
-    public class Mine
+    public class Coordinate
     {
-        public Coordinate Position { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
     }
 }

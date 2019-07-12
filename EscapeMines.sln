@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.705
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App", "App\App.csproj", "{A08397D9-0C2D-4871-B98D-CA68FF016E91}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EscapeMine", "App\EscapeMine.csproj", "{A08397D9-0C2D-4871-B98D-CA68FF016E91}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{8511D0D9-3355-4F79-81F7-E25299C5BB3E}"
 EndProject
@@ -11,7 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "Service\Service.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{551C5482-1D43-4E3C-8CD0-05F643F686AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{04341251-C54E-4D2A-802A-475399E6E39D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{04341251-C54E-4D2A-802A-475399E6E39D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{DBC3F075-7AE1-4F83-8197-E279E4BE774E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{D1BA6515-00A8-42F9-891B-75F236891014}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +46,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A08397D9-0C2D-4871-B98D-CA68FF016E91} = {D1BA6515-00A8-42F9-891B-75F236891014}
+		{8511D0D9-3355-4F79-81F7-E25299C5BB3E} = {DBC3F075-7AE1-4F83-8197-E279E4BE774E}
+		{B1A8FF77-5711-46FF-8E34-6FFDDC1C3DC4} = {DBC3F075-7AE1-4F83-8197-E279E4BE774E}
+		{04341251-C54E-4D2A-802A-475399E6E39D} = {DBC3F075-7AE1-4F83-8197-E279E4BE774E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {257E5E94-571D-494C-A926-FF5D7CF79861}
