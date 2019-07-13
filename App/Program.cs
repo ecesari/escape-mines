@@ -14,9 +14,8 @@ namespace EscapeMine
 
         static void Main(string[] args)
         {
-        
-
             RegisterServices();
+
             var settings = System.IO.File.ReadAllLines(@"C:\Users\ece.sarioglu\source\repos\escape-mines\Infrastructure\settings.txt");
 
             var boardService = _serviceProvider.GetService<IBoardService>();
@@ -28,12 +27,11 @@ namespace EscapeMine
             mineService.RunInitial(settings[1]);
             coordinateService.RunExitCreationCommand(settings[2]);
             turtleService.RunInitial(settings[3]);
-            //add params to board
-            //var board = boardService.Create(boardDimension, mineList, exitPoint, turtle);
             turtleService.Move(settings[4]);
+
             var result = turtleService.GetStatus();
-
-
+            Console.WriteLine(result);
+            Console.ReadLine();
         }
 
         private static void RegisterServices()

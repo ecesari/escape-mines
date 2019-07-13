@@ -15,6 +15,13 @@ namespace Service
     }
     public class MineService:IMineService
     {
+        private readonly IBoardService _boardService;
+
+        public MineService(IBoardService boardService)
+        {
+            _boardService = boardService;
+        }
+
         public Mine Create(Coordinate coordinate)
         {
             return new Mine
@@ -31,6 +38,12 @@ namespace Service
             //var s = "ab,cd;ef,gh;ij,kl";
             var mineCoordinates = command.Split(' ').ToArray();
             //var mineCoordinates = command.ToIntArray();
+            var mineList = CreateMines(mineCoordinates);
+            _boardService.AddMines(mineList);
+        }
+
+        private static List<Mine> CreateMines(string[] mineCoordinates)
+        {
             var mineList = new List<Mine>();
 
             foreach (var mineCoordinate in mineCoordinates)
@@ -48,6 +61,8 @@ namespace Service
                 };
                 mineList.Add(mine);
             }
+
+            return mineList;
         }
     }
 }

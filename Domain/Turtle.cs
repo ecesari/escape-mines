@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Helper.Enums;
+﻿using Helper.Enums;
 
 namespace Domain
 {
@@ -9,5 +6,6 @@ namespace Domain
     {
         public Coordinate Position { get; set; }
         public Orientation Orientation { get; set; }
+        public Status Status { get; set; }
     }
 }

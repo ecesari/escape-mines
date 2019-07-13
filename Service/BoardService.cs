@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Linq;
 using System.Text;
 using Domain;
 using Helper;
@@ -13,6 +14,11 @@ namespace Service
     {
 
         void RunInitial(string command);
+        void AddMines(List<Mine> mineList);
+        void AddExit(Coordinate exit);
+        void AddTurtle(Turtle turtle);
+        bool MineExistsInLocation(Coordinate coordinate);
+        bool ExitExistsInLocation(Coordinate coordinate);
     }
     public class BoardService : IBoardService
     {
@@ -26,16 +32,7 @@ namespace Service
                Height = height
             };
         }
-        //public Board CreateInitial(List<Mine> mines, Coordinate exit,
-        //    Turtle turtle)
-        //{
-        //    return new Board
-        //    {
-        //        Turtle = turtle,
-        //        Mines = mines,
-        //        ExitPoint = exit
-        //    };
-        //}
+
 
 
 
@@ -44,6 +41,32 @@ namespace Service
             var boardSizeCoordinates = command.ToIntArray();
             //check if int
             CreateInitial(boardSizeCoordinates[0], boardSizeCoordinates[1]);
+        }
+
+        public void AddMines(List<Mine> mineList)
+        {
+            _board.Mines = mineList;
+        }
+
+        public void AddExit(Coordinate exit)
+        {
+            //check mines
+            _board.ExitPoint = exit;
+        }
+
+        public void AddTurtle(Turtle turtle)
+        {
+            _board.Turtle = turtle;
+        }
+
+        public bool MineExistsInLocation(Coordinate coordinate)
+        {
+            return _board.Mines.Any(x => x.Position == coordinate);
+        }
+
+        public bool ExitExistsInLocation(Coordinate coordinate)
+        {
+            return _board.ExitPoint == coordinate;
         }
     }
 }

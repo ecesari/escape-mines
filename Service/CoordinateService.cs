@@ -11,6 +11,13 @@ namespace Service
     }
     public class CoordinateService : ICoordinateService
     {
+        private readonly IBoardService _boardService;
+
+        public CoordinateService(IBoardService boardService)
+        {
+            _boardService = boardService;
+        }
+
         public Coordinate Create(int x, int y)
         {
             return new Coordinate
@@ -24,6 +31,7 @@ namespace Service
         {
             var exit = command.ToIntArray();
             var exitCoordinate = CreateCoordinate(exit[0], exit[1]);
+            _boardService.AddExit(exitCoordinate);
         }
 
         private static Coordinate CreateCoordinate(int x, int y)
