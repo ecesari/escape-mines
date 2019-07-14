@@ -29,7 +29,7 @@ namespace Service
 
         public void RunExitCreationCommand(string command)
         {
-            var exit = command.ToIntArray();
+            var exit = command.ToIntArray(' ');
             var exitCoordinate = CreateCoordinate(exit[0], exit[1]);
             _boardService.AddExit(exitCoordinate);
         }

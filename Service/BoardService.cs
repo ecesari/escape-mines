@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Domain;
-using Helper;
 using Helper.Helpers;
 
 
@@ -12,13 +8,13 @@ namespace Service
 {
     public interface IBoardService
     {
-
-        void RunInitial(string command);
+        void Create(string command);
         void AddMines(List<Mine> mineList);
         void AddExit(Coordinate exit);
         void AddTurtle(Turtle turtle);
         bool MineExistsInLocation(Coordinate coordinate);
         bool ExitExistsInLocation(Coordinate coordinate);
+        Board GetBoard();
     }
     public class BoardService : IBoardService
     {
@@ -33,13 +29,9 @@ namespace Service
             };
         }
 
-
-
-
-        public void RunInitial(string command)
+        public void Create(string command)
         {
-            var boardSizeCoordinates = command.ToIntArray();
-            //check if int
+            var boardSizeCoordinates = command.ToIntArray(' ');
             CreateInitial(boardSizeCoordinates[0], boardSizeCoordinates[1]);
         }
 
@@ -67,6 +59,11 @@ namespace Service
         public bool ExitExistsInLocation(Coordinate coordinate)
         {
             return _board.ExitPoint == coordinate;
+        }
+
+        public Board GetBoard()
+        {
+            return _board;
         }
     }
 }

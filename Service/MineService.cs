@@ -1,63 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
 using Domain;
-using Helper;
 using Helper.Helpers;
 
 namespace Service
 {
     public interface IMineService
     {
-        Mine Create(Coordinate coordinate);
-        void RunInitial(string command);
+        void Create(string command);
     }
     public class MineService:IMineService
     {
         private readonly IBoardService _boardService;
+        private readonly ICoordinateService _coordinateService;
 
-        public MineService(IBoardService boardService)
+        public MineService(IBoardService boardService, ICoordinateService coordinateService)
         {
             _boardService = boardService;
+            _coordinateService = coordinateService;
         }
 
-        public Mine Create(Coordinate coordinate)
+        public void Create(string command)
         {
-            return new Mine
-            {
-                Position = coordinate
-            };
-        }
+            var mineCoordinates = command.ToStringArray(' ');
 
-        public void RunInitial(string command)
-        {
-            //check if int
-            //chekc if array valid
-
-            //var s = "ab,cd;ef,gh;ij,kl";
-            var mineCoordinates = command.Split(' ').ToArray();
-            //var mineCoordinates = command.ToIntArray();
             var mineList = CreateMines(mineCoordinates);
             _boardService.AddMines(mineList);
         }
 
-        private static List<Mine> CreateMines(string[] mineCoordinates)
+        private  List<Mine> CreateMines(string[] mineCoordinates)
         {
             var mineList = new List<Mine>();
 
             foreach (var mineCoordinate in mineCoordinates)
             {
-                var coordinates = mineCoordinate.ToIntArray();
+                var coordinates = mineCoordinate;
                 //check if mine is within range
                 //check if mine already exists
+
                 var mine = new Mine
                 {
-                    Position = new Coordinate
-                    {
-                        X = coordinates[0],
-                        Y = coordinates[1]
-                    }
+                   Position = _coordinateService.Create(coordinates[0], coordinates[1])
                 };
                 mineList.Add(mine);
             }

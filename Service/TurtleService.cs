@@ -17,7 +17,7 @@ namespace Service
     {
         private readonly ICoordinateService _coordinateService;
         private readonly IBoardService _boardService;
-        private readonly Turtle _turtle;
+        private Turtle _turtle;
 
         public TurtleService(ICoordinateService coordinateService, Turtle turtle, IBoardService boardService)
         {
@@ -91,7 +91,7 @@ namespace Service
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-
+            //Check If Fallen Off
         }
 
         public string GetStatus()
