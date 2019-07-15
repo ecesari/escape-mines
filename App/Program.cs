@@ -30,9 +30,9 @@ namespace EscapeMine
 
             #region Enter Commands
             boardService.Create(settings[0]);
-            mineService.Create(settings[1]);
-            coordinateService.RunExitCreationCommand(settings[2]);
-            turtleService.RunInitial(settings[3]);
+            boardService.CreateMines(settings[1]);
+            boardService.CreateExit(settings[2]);
+            boardService.CreateTurtle(settings[3]);
             turtleService.Move(settings[4]); 
             #endregion
 

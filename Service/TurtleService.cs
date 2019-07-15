@@ -8,9 +8,9 @@ namespace Service
 {
     public interface ITurtleService
     {
-        void RunInitial(string command);
         void Move(string command);
         string GetStatus();
+        Turtle Create(Coordinate turtleStartingCoordinate, Orientation turtleOrientation);
     }
 
     public class TurtleService : ITurtleService
@@ -19,31 +19,20 @@ namespace Service
         private readonly IBoardService _boardService;
         private Turtle _turtle;
 
-        public TurtleService(ICoordinateService coordinateService, Turtle turtle, IBoardService boardService)
+        public TurtleService(ICoordinateService coordinateService, IBoardService boardService)
         {
             _coordinateService = coordinateService;
-            _turtle = turtle;
             _boardService = boardService;
         }
 
         public Turtle Create(Coordinate turtleStartingPosition, Orientation turtleOrientation)
         {
-            return new Turtle
+            return _turtle ?? (_turtle = new Turtle
             {
                 Position = turtleStartingPosition,
-                Orientation = turtleOrientation
-            };
-        }
-
-
-
-        public void RunInitial(string command)
-        {
-            //add validation
-            var turtleStartingCoordinate = _coordinateService.Create(command[0], command[1]);
-            var turtleOrientation = EnumHelper<Orientation>.GetValueFromName(command[2].ToString());
-            Create(turtleStartingCoordinate, turtleOrientation);
-            _boardService.AddTurtle(_turtle);
+                Orientation = turtleOrientation,
+                Status = Status.InDanger
+            });
         }
 
         public void Move(string command)

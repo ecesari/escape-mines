@@ -12,6 +12,8 @@ namespace Helper.Helpers
             return intArray;
         }
 
+     
+
         public static string[] ToStringArray(this string stringValue,char separator)
         {
             var stringArray = stringValue.Trim().Split(separator);
