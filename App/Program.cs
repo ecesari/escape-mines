@@ -23,9 +23,7 @@ namespace EscapeMine
             //Get Services
             #region GetServices
             var boardService = _serviceProvider.GetService<IBoardService>();
-            var mineService = _serviceProvider.GetService<IMineService>();
             var turtleService = _serviceProvider.GetService<ITurtleService>();
-            var coordinateService = _serviceProvider.GetService<ICoordinateService>();
             #endregion
 
             #region Enter Commands

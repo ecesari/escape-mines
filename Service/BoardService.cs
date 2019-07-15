@@ -17,6 +17,7 @@ namespace Service
         void CreateTurtle(string command);
         bool MineExistsInLocation(Coordinate coordinate);
         bool ExitExistsInLocation(Coordinate coordinate);
+        bool PositionInRange(int x, int y);
     }
     public class BoardService : IBoardService
     {
@@ -126,7 +127,7 @@ namespace Service
             return _board != null;
         }
 
-        private bool PositionInRange(int x, int y)
+        public bool PositionInRange(int x, int y)
         {
             return _board.Width >= x && _board.Height >= y;
         }
