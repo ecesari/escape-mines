@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using Domain;
 using Helper.Enums;
 using Helper.Helpers;
@@ -10,17 +9,20 @@ namespace Service
     {
         void Move(string command);
         string GetStatus();
+        void CreateTurtle(string command);
         Turtle Create(Coordinate turtleStartingCoordinate, Orientation turtleOrientation);
     }
 
     public class TurtleService : ITurtleService
     {
         private readonly IBoardService _boardService;
+        private readonly ICoordinateService _coordinateService;
         private Turtle _turtle;
 
-        public TurtleService(IBoardService boardService)
+        public TurtleService(IBoardService boardService, ICoordinateService coordinateService)
         {
             _boardService = boardService;
+            _coordinateService = coordinateService;
         }
 
         public Turtle Create(Coordinate turtleStartingPosition, Orientation turtleOrientation)
@@ -32,13 +34,35 @@ namespace Service
                 Status = Status.InDanger
             });
         }
+        public void CreateTurtle(string command)
+        {
+            var array = command.ToStringArray(' ');
+            var turtleStartingCoordinate = _coordinateService.Create(Convert.ToInt32(array[0]), Convert.ToInt32(array[1]));
 
+            var exception = _boardService.ValidPosition(turtleStartingCoordinate, "turtle");
+            if (exception != null)
+                throw exception;
+
+            var turtleOrientation = EnumHelper<Orientation>.GetValueFromName(array[2]);
+            var turtle = Create(turtleStartingCoordinate, turtleOrientation);
+
+            var board = _boardService.GetBoard();
+
+            if (board == null)
+                throw new NullReferenceException("The board has not been initialized!");
+            if (turtle.Board != null)
+                throw new Exception("The turtle already has a board!");
+
+            turtle.Board = board;
+
+        }
         public void Move(string command)
         {
-            foreach (var move in command)
+            var array = command.ToStringArray(' ');
+            foreach (var move in array)
             {
-                var movement = EnumHelper<Movement>.GetValueFromName(move.ToString());
                 if (_turtle.Status != Status.InDanger) continue; //Turtle Is Either Dead or Freed, continue
+                var movement = EnumHelper<Movement>.GetValueFromName(move);
                 switch (movement)
                 {
                     case Movement.Left:
@@ -55,6 +79,10 @@ namespace Service
                         throw new ArgumentOutOfRangeException(nameof(movement), movement, null);
                 }
             }
+        }
+        public string GetStatus()
+        {
+            return EnumHelper<Status>.GetDisplayValue(_turtle.Status);
         }
 
         private void MoveForward()
@@ -77,25 +105,17 @@ namespace Service
                     throw new ArgumentOutOfRangeException();
             }
         }
-
-        public string GetStatus()
-        {
-            return EnumHelper<Status>.GetDisplayValue(_turtle.Status);
-        }
-
-
-
         private void UpdateStatus()
         {
             //Check if a mine has been hit
-            var mineHit = _boardService.MineExistsInLocation(_turtle.Position);
+            var mineHit = _boardService.MineExistsInLocation(_turtle.Position.X, _turtle.Position.Y);
             if (mineHit)
             {
                 _turtle.Status = Status.Dead;
                 return;
             }
             //Check if the turtle has found the exit
-            var freed = _boardService.ExitExistsInLocation(_turtle.Position);
+            var freed = _boardService.ExitExistsInLocation(_turtle.Position.X, _turtle.Position.Y);
             if (freed)
             {
                 _turtle.Status = Status.Freed;

@@ -16,7 +16,7 @@ namespace Test
         {
             var boardServiceStub = new Mock<IBoardService>();
             var coordinateServiceStub = new Mock<ICoordinateService>();
-            var turtleService = new TurtleService(boardServiceStub.Object);
+            var turtleService = new TurtleService(boardServiceStub.Object,coordinateServiceStub.Object);
             var turtle = turtleService.Create(new Coordinate(), Orientation.East);
             Assert.NotNull(turtle);
         }
@@ -25,7 +25,8 @@ namespace Test
         public void CreateTurtle_ReturnCoordinateX()
         {
             var boardServiceStub = new Mock<IBoardService>();
-            var turtleService = new TurtleService(boardServiceStub.Object);
+            var coordinateServiceStub = new Mock<ICoordinateService>();
+            var turtleService = new TurtleService(boardServiceStub.Object, coordinateServiceStub.Object);
             var turtle = turtleService.Create(new Coordinate { X = 0, Y = 0 }, Orientation.East);
             var result = turtle.Position.X;
             Assert.Equal(0, result);
@@ -35,7 +36,8 @@ namespace Test
         public void CreateTurtle_ReturnCoordinateY()
         {
             var boardServiceStub = new Mock<IBoardService>();
-            var turtleService = new TurtleService(boardServiceStub.Object);
+            var coordinateServiceStub = new Mock<ICoordinateService>();
+            var turtleService = new TurtleService(boardServiceStub.Object, coordinateServiceStub.Object);
             var turtle = turtleService.Create(new Coordinate { X = 0, Y = 0 }, Orientation.East);
             var result = turtle.Position.Y;
             Assert.Equal(0, result);
@@ -45,7 +47,8 @@ namespace Test
         public void CreateTurtle_ReturnOrientation()
         {
             var boardServiceStub = new Mock<IBoardService>();
-            var turtleService = new TurtleService(boardServiceStub.Object);
+            var coordinateServiceStub = new Mock<ICoordinateService>();
+            var turtleService = new TurtleService(boardServiceStub.Object, coordinateServiceStub.Object);
             var turtle = turtleService.Create(new Coordinate(), Orientation.East);
             var result = turtle.Orientation;
             Assert.Equal(Orientation.East, result);
@@ -60,7 +63,8 @@ namespace Test
         public void TurnLeft_ReturnUpdatedOrientation(Orientation startingOrientation, Orientation expectedOrientation)
         {
             var boardServiceStub = new Mock<IBoardService>();
-            var turtleService = new TurtleService(boardServiceStub.Object);
+            var coordinateServiceStub = new Mock<ICoordinateService>();
+            var turtleService = new TurtleService(boardServiceStub.Object, coordinateServiceStub.Object);
             var turtle = turtleService.Create(new Coordinate(), startingOrientation);
             turtleService.Move("L");
             var result = turtle.Orientation;
@@ -76,7 +80,8 @@ namespace Test
         public void TurnRight_ReturnUpdatedOrientation(Orientation startingOrientation, Orientation expectedOrientation)
         {
             var boardServiceStub = new Mock<IBoardService>();
-            var turtleService = new TurtleService(boardServiceStub.Object);
+            var coordinateServiceStub = new Mock<ICoordinateService>();
+            var turtleService = new TurtleService(boardServiceStub.Object, coordinateServiceStub.Object);
             var turtle = turtleService.Create(new Coordinate(), startingOrientation);
             turtleService.Move("R");
             var result = turtle.Orientation;
@@ -93,7 +98,8 @@ namespace Test
         {
             var boardServiceStub = new Mock<IBoardService>();
             boardServiceStub.Setup(z => z.PositionInRange(It.IsAny<int>(), It.IsAny<int>())).Returns(true);
-            var turtleService = new TurtleService(boardServiceStub.Object);
+            var coordinateServiceStub = new Mock<ICoordinateService>();
+            var turtleService = new TurtleService(boardServiceStub.Object, coordinateServiceStub.Object);
             var turtle = turtleService.Create(new Coordinate { X = x, Y = y }, direction);
             turtleService.Move("M");
             var result = turtle.Position.X;
@@ -110,8 +116,9 @@ namespace Test
         {
             var boardServiceStub = new Mock<IBoardService>();
             boardServiceStub.Setup(z => z.PositionInRange(It.IsAny<int>(), It.IsAny<int>())).Returns(true);
-            boardServiceStub.Setup(z => z.MineExistsInLocation(It.IsAny<Coordinate>())).Returns(true);
-            var turtleService = new TurtleService(boardServiceStub.Object);
+            boardServiceStub.Setup(z => z.MineExistsInLocation(It.IsAny<int>(),It.IsAny<int>())).Returns(true);
+            var coordinateServiceStub = new Mock<ICoordinateService>();
+            var turtleService = new TurtleService(boardServiceStub.Object, coordinateServiceStub.Object);
             var turtle = turtleService.Create(new Coordinate { X = x, Y = y }, direction);
             turtleService.Move("M");
             var result = turtle.Status;
@@ -127,8 +134,9 @@ namespace Test
         {
             var boardServiceStub = new Mock<IBoardService>();
             boardServiceStub.Setup(z => z.PositionInRange(It.IsAny<int>(), It.IsAny<int>())).Returns(true);
-            boardServiceStub.Setup(z => z.ExitExistsInLocation(It.IsAny<Coordinate>())).Returns(true);
-            var turtleService = new TurtleService(boardServiceStub.Object);
+            boardServiceStub.Setup(z => z.ExitExistsInLocation(It.IsAny<int>(),It.IsAny<int>())).Returns(true);
+            var coordinateServiceStub = new Mock<ICoordinateService>();
+            var turtleService = new TurtleService(boardServiceStub.Object, coordinateServiceStub.Object);
             var turtle = turtleService.Create(new Coordinate { X = x, Y = y }, direction);
             turtleService.Move("M");
             var result = turtle.Status;
@@ -145,7 +153,8 @@ namespace Test
         {
             var boardServiceStub = new Mock<IBoardService>();
             boardServiceStub.Setup(z => z.PositionInRange(It.IsAny<int>(), It.IsAny<int>())).Returns(true);
-            var turtleService = new TurtleService(boardServiceStub.Object);
+            var coordinateServiceStub = new Mock<ICoordinateService>();
+            var turtleService = new TurtleService(boardServiceStub.Object, coordinateServiceStub.Object);
             var turtle = turtleService.Create(new Coordinate { X = x, Y = y }, direction);
             turtleService.Move("M");
             var result = turtle.Status;
@@ -163,7 +172,8 @@ namespace Test
         {
             var boardServiceStub = new Mock<IBoardService>();
             boardServiceStub.Setup(z => z.PositionInRange(It.IsAny<int>(), It.IsAny<int>())).Returns(false);
-            var turtleService = new TurtleService(boardServiceStub.Object);
+            var coordinateServiceStub = new Mock<ICoordinateService>();
+            var turtleService = new TurtleService(boardServiceStub.Object, coordinateServiceStub.Object);
             turtleService.Create(new Coordinate { X = x, Y = y }, direction);
           
             Assert.Throws<InvalidOperationException>(() => turtleService.Move("M"));
@@ -176,10 +186,58 @@ namespace Test
         {
             var boardServiceStub = new Mock<IBoardService>();
             boardServiceStub.Setup(z => z.PositionInRange(It.IsAny<int>(), It.IsAny<int>())).Returns(true);
-            var turtleService = new TurtleService(boardServiceStub.Object);
+            var coordinateServiceStub = new Mock<ICoordinateService>();
+            var turtleService = new TurtleService(boardServiceStub.Object, coordinateServiceStub.Object);
             turtleService.Create(new Coordinate { X = x, Y = y }, direction);
             var result = turtleService.GetStatus();
             Assert.Equal("Still in Danger",result);
         }
+
+
+
+        [Fact]
+        public void CreateTurtle_EmptyBoard_ThrowsNullException()
+        {
+            var boardServiceStub = new Mock<IBoardService>();
+            boardServiceStub.Setup(z => z.PositionInRange(It.IsAny<int>(), It.IsAny<int>())).Returns(true);
+            var coordinateServiceStub = new Mock<ICoordinateService>();
+            var turtleService = new TurtleService(boardServiceStub.Object, coordinateServiceStub.Object);
+            Assert.Throws<NullReferenceException>(() => turtleService.CreateTurtle("0 0 N"));
+        }
+
+        [Fact]
+        public void CreateTurtle_InvalidPosition_ThrowsException()
+        {
+           
+            var boardServiceStub = new Mock<IBoardService>();
+            boardServiceStub.Setup(z => z.PositionInRange(It.IsAny<int>(), It.IsAny<int>())).Returns(true);
+            boardServiceStub.Setup(z => z.ValidPosition(It.IsAny<Coordinate>(), It.IsAny<string>())).Returns(new Exception());
+            var coordinateServiceStub = new Mock<ICoordinateService>();
+            var turtleService = new TurtleService(boardServiceStub.Object, coordinateServiceStub.Object);
+          
+            Assert.Throws<Exception>(() => turtleService.CreateTurtle("1 1 N"));
+        }
+
+        //[Fact]
+        //public void CreateTurtle_BoardAlreadyInitialized_ThrowsException()
+        //{
+        //    //var mineServiceStub = new Mock<IMineService>();
+        //    //var coordinateServiceStub = new Mock<ICoordinateService>();
+        //    //coordinateServiceStub.Setup(x => x.Create(0, 0))
+        //    //    .Returns(new Coordinate { X = 0, Y = 0 });
+        //    //coordinateServiceStub.Setup(x => x.Create(1, 1))
+        //    //    .Returns(new Coordinate { X = 1, Y = 1 });
+        //    //var turtleServiceStub = new Mock<ITurtleService>();
+        //    //var boardService = new BoardService(mineServiceStub.Object, coordinateServiceStub.Object);
+
+
+        //    var boardServiceStub = new Mock<IBoardService>();
+        //    boardServiceStub.Setup(x => x.Create(It.IsAny<string>()));
+        //    var coordinateServiceStub = new Mock<ICoordinateService>();
+        //    var turtleService = new TurtleService(boardServiceStub.Object, coordinateServiceStub.Object);
+         
+        //    turtleService.CreateTurtle("0 0 N");
+        //    Assert.Throws<Exception>(() => turtleService.CreateTurtle("1 1 N"));
+        //}
     }
 }

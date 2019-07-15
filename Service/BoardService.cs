@@ -14,23 +14,25 @@ namespace Service
         void Create(string command);
         void CreateMines(string command);
         void CreateExit(string command);
-        void CreateTurtle(string command);
-        bool MineExistsInLocation(Coordinate coordinate);
-        bool ExitExistsInLocation(Coordinate coordinate);
+        //void CreateTurtle(string command);
+        bool MineExistsInLocation(int x, int y);
+        bool ExitExistsInLocation(int x, int y);
         bool PositionInRange(int x, int y);
+        Exception ValidPosition(Coordinate coordinate, string name);
+        Board GetBoard();
     }
     public class BoardService : IBoardService
     {
         private Board _board;
         private readonly IMineService _mineService;
         private readonly ICoordinateService _coordinateService;
-        private readonly ITurtleService _turtleService;
+        //private readonly ITurtleService _turtleService;
 
-        public BoardService(IMineService mineService, ICoordinateService coordinateService, ITurtleService turtleService)
+        public BoardService(IMineService mineService, ICoordinateService coordinateService/*, ITurtleService turtleService*/)
         {
             _mineService = mineService;
             _coordinateService = coordinateService;
-            _turtleService = turtleService;
+            //_turtleService = turtleService;
         }
 
         public void Create(string command)
@@ -88,31 +90,31 @@ namespace Service
                 throw exception;
         }
 
-        public void CreateTurtle(string command)
+        //public void CreateTurtle(string command)
+        //{
+        //    var array = command.ToStringArray(' ');
+        //    var turtleStartingCoordinate = _coordinateService.Create(Convert.ToInt32(array[0]), Convert.ToInt32(array[1]));
+        //    var exception = ValidPosition(turtleStartingCoordinate, "turtle");
+        //    if (exception != null)
+        //        throw exception;
+        //    var turtleOrientation = EnumHelper<Orientation>.GetValueFromName(array[2]);
+
+        //    var turtle = _turtleService.Create(turtleStartingCoordinate, turtleOrientation);
+        //    if (_board.Turtle != null)
+        //        throw new Exception("There is already a turtle in the board!");
+        //    _board.Turtle = turtle;
+
+        //}
+
+
+
+        public bool MineExistsInLocation(int x, int y)
         {
-            var array = command.ToStringArray(' ');
-            var turtleStartingCoordinate = _coordinateService.Create(Convert.ToInt32(array[0]), Convert.ToInt32(array[1]));
-            var exception = ValidPosition(turtleStartingCoordinate, "turtle");
-            if (exception != null)
-                throw exception;
-            var turtleOrientation = EnumHelper<Orientation>.GetValueFromName(array[2]);
-
-            var turtle = _turtleService.Create(turtleStartingCoordinate, turtleOrientation);
-            if (_board.Turtle != null)
-                throw new Exception("There is already a turtle in the board!");
-            _board.Turtle = turtle;
-
+            return _board.Mines != null && _board.Mines.Count > 0 && _board.Mines.Any(z => z.Position.X == x && z.Position.Y == y);
         }
-
-
-
-        public bool MineExistsInLocation(Coordinate coordinate)
+        public bool ExitExistsInLocation(int x,int y)
         {
-            return _board.Mines != null && _board.Mines.Count > 0 && _board.Mines.Any(x => x.Position == coordinate);
-        }
-        public bool ExitExistsInLocation(Coordinate coordinate)
-        {
-            return _board.ExitPoint == coordinate;
+            return _board.ExitPoint != null && _board.ExitPoint.X == x && _board.ExitPoint.Y == y;
         }
         public Board GetBoard()
         {
@@ -132,14 +134,14 @@ namespace Service
             return _board.Width >= x && _board.Height >= y;
         }
 
-        private Exception ValidPosition(Coordinate position, string objectName)
+        public Exception ValidPosition(Coordinate position, string objectName)
         {
             if (!BoardExists())
                 return new NullReferenceException("No board has been found. Please initialize the board before adding mines.");
             var positionIsInRange = PositionInRange(position.X, position.Y);
             if (!positionIsInRange)
                 return new Exception($"The position of the {objectName} is not in the range of the board!");
-            var mineExists = MineExistsInLocation(position);
+            var mineExists = MineExistsInLocation(position.X, position.Y);
             if (mineExists)
                 return new Exception($"There is a mine in the location of the {objectName} input!");
             return null;

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Domain;
-
+using System.IO;
 using Microsoft.Extensions.DependencyInjection;
 using Service;
 
@@ -15,24 +12,21 @@ namespace EscapeMine
         static void Main(string[] args)
         {
             RegisterServices();
-
-            //change to dynamic path
-            var settings = System.IO.File.ReadAllLines(@"C:\Users\Ece\Documents\Visual Studio 2017\Projects\EscapeMines\Infrastructure\settings.txt");
-
+            var path = (@"../../../Data/settings.txt");
+            var settings = File.ReadAllLines(path);
 
             //Get Services
-            #region GetServices
             var boardService = _serviceProvider.GetService<IBoardService>();
             var turtleService = _serviceProvider.GetService<ITurtleService>();
-            #endregion
+       
 
-            #region Enter Commands
+            //Enter Commands
             boardService.Create(settings[0]);
             boardService.CreateMines(settings[1]);
             boardService.CreateExit(settings[2]);
-            boardService.CreateTurtle(settings[3]);
+            turtleService.CreateTurtle(settings[3]);
             turtleService.Move(settings[4]); 
-            #endregion
+            
 
             var result = turtleService.GetStatus();
             Console.WriteLine(result);

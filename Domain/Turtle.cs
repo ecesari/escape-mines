@@ -7,5 +7,6 @@ namespace Domain
         public Coordinate Position { get; set; }
         public Orientation Orientation { get; set; }
         public Status Status { get; set; }
+        public Board Board { get; set; }
     }
 }
