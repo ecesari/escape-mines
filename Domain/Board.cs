@@ -8,6 +8,5 @@ namespace Domain
         public Coordinate ExitPoint { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
-        //public Turtle Turtle { get; set; }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace Helper.Helpers
 {
@@ -12,8 +11,6 @@ namespace Helper.Helpers
             return intArray;
         }
 
-     
-
         public static string[] ToStringArray(this string stringValue,char separator)
         {
             var stringArray = stringValue.Trim().Split(separator);
@@ -23,11 +20,9 @@ namespace Helper.Helpers
         public static int[][] ToTwoDimensionalIntArray(this string stringValue, char firstSeparator,
             char secondSeparator)
         {
-
             var firstArray = stringValue.ToStringArray(firstSeparator);
             var array = new int[firstArray.Length][];
 
-            //["1","2"],["1","3"],["4","5"]
             for (var i = 0; i < firstArray.Length; i++)
             {
                 var item = firstArray[i];

@@ -31,7 +31,7 @@ namespace Service
             {
                 Position = turtleStartingPosition,
                 Orientation = turtleOrientation,
-                Status = Status.InDanger
+                Status = TurtleStatus.InDanger
             });
         }
         public void CreateTurtle(string command)
@@ -61,7 +61,7 @@ namespace Service
             var array = command.ToStringArray(' ');
             foreach (var move in array)
             {
-                if (_turtle.Status != Status.InDanger) continue; //Turtle Is Either Dead or Freed, continue
+                if (_turtle.Status != TurtleStatus.InDanger) continue; //Turtle Is Either Dead or Freed, continue
                 var movement = EnumHelper<Movement>.GetValueFromName(move);
                 switch (movement)
                 {
@@ -82,7 +82,7 @@ namespace Service
         }
         public string GetStatus()
         {
-            return EnumHelper<Status>.GetDisplayValue(_turtle.Status);
+            return EnumHelper<TurtleStatus>.GetDisplayValue(_turtle.Status);
         }
 
         private void MoveForward()
@@ -111,14 +111,14 @@ namespace Service
             var mineHit = _boardService.MineExistsInLocation(_turtle.Position.X, _turtle.Position.Y);
             if (mineHit)
             {
-                _turtle.Status = Status.Dead;
+                _turtle.Status = TurtleStatus.Dead;
                 return;
             }
             //Check if the turtle has found the exit
             var freed = _boardService.ExitExistsInLocation(_turtle.Position.X, _turtle.Position.Y);
             if (freed)
             {
-                _turtle.Status = Status.Freed;
+                _turtle.Status = TurtleStatus.Freed;
                 return;
             }
             //Check If Fallen Off

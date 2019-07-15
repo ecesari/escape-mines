@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Domain;
-using Helper.Enums;
 using Helper.Helpers;
 
 
@@ -14,7 +12,6 @@ namespace Service
         void Create(string command);
         void CreateMines(string command);
         void CreateExit(string command);
-        //void CreateTurtle(string command);
         bool MineExistsInLocation(int x, int y);
         bool ExitExistsInLocation(int x, int y);
         bool PositionInRange(int x, int y);
@@ -26,13 +23,11 @@ namespace Service
         private Board _board;
         private readonly IMineService _mineService;
         private readonly ICoordinateService _coordinateService;
-        //private readonly ITurtleService _turtleService;
 
-        public BoardService(IMineService mineService, ICoordinateService coordinateService/*, ITurtleService turtleService*/)
+        public BoardService(IMineService mineService, ICoordinateService coordinateService)
         {
             _mineService = mineService;
             _coordinateService = coordinateService;
-            //_turtleService = turtleService;
         }
 
         public void Create(string command)
@@ -51,7 +46,6 @@ namespace Service
                 Mines = new List<Mine>()
             };
         }
-
         public void CreateMines(string command)
         {
             var coordinates = command.ToTwoDimensionalIntArray(' ', ',');
@@ -73,7 +67,6 @@ namespace Service
                 _board.Mines.Add(mine);
             }
         }
-
         public void CreateExit(string command)
         {
             var exit = command.ToIntArray(' ');
@@ -90,24 +83,6 @@ namespace Service
                 throw exception;
         }
 
-        //public void CreateTurtle(string command)
-        //{
-        //    var array = command.ToStringArray(' ');
-        //    var turtleStartingCoordinate = _coordinateService.Create(Convert.ToInt32(array[0]), Convert.ToInt32(array[1]));
-        //    var exception = ValidPosition(turtleStartingCoordinate, "turtle");
-        //    if (exception != null)
-        //        throw exception;
-        //    var turtleOrientation = EnumHelper<Orientation>.GetValueFromName(array[2]);
-
-        //    var turtle = _turtleService.Create(turtleStartingCoordinate, turtleOrientation);
-        //    if (_board.Turtle != null)
-        //        throw new Exception("There is already a turtle in the board!");
-        //    _board.Turtle = turtle;
-
-        //}
-
-
-
         public bool MineExistsInLocation(int x, int y)
         {
             return _board.Mines != null && _board.Mines.Count > 0 && _board.Mines.Any(z => z.Position.X == x && z.Position.Y == y);
@@ -116,24 +91,15 @@ namespace Service
         {
             return _board.ExitPoint != null && _board.ExitPoint.X == x && _board.ExitPoint.Y == y;
         }
+
         public Board GetBoard()
         {
             return _board;
         }
-
-
-
-
-        private bool BoardExists()
-        {
-            return _board != null;
-        }
-
         public bool PositionInRange(int x, int y)
         {
             return _board.Width >= x && _board.Height >= y;
         }
-
         public Exception ValidPosition(Coordinate position, string objectName)
         {
             if (!BoardExists())
@@ -145,6 +111,11 @@ namespace Service
             if (mineExists)
                 return new Exception($"There is a mine in the location of the {objectName} input!");
             return null;
+        }
+
+        private bool BoardExists()
+        {
+            return _board != null;
         }
     }
 }

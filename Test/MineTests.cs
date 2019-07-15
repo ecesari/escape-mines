@@ -48,7 +48,6 @@ namespace Test
                 .Returns(new Coordinate { X = mineInput[0], Y = mineInput[1] });
             var mineService = new MineService(coordinateServiceStub.Object);
             var mine = mineService.CreateMine(mineInput);
-
             var result = mine.Position.Y;
             Assert.Equal(result, expectedValue);
         }

@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using Domain;
 using Moq;
 using Service;
@@ -15,9 +14,7 @@ namespace Test
         {
             var mineServiceStub = new Mock<IMineService>();
             var coordinateServiceStub = new Mock<ICoordinateService>();
-            var turtleServiceStub = new Mock<ITurtleService>();
             var boardService = new BoardService(mineServiceStub.Object, coordinateServiceStub.Object);
-
             boardService.Create(value);
             var board = boardService.GetBoard();
             Assert.NotNull(board);
@@ -29,7 +26,6 @@ namespace Test
         {
             var mineServiceStub = new Mock<IMineService>();
             var coordinateServiceStub = new Mock<ICoordinateService>();
-            var turtleServiceStub = new Mock<ITurtleService>();
             var boardService = new BoardService(mineServiceStub.Object, coordinateServiceStub.Object);
             boardService.Create(value);
             var board = boardService.GetBoard();
@@ -42,23 +38,17 @@ namespace Test
         {
             var mineServiceStub = new Mock<IMineService>();
             var coordinateServiceStub = new Mock<ICoordinateService>();
-            var turtleServiceStub = new Mock<ITurtleService>();
             var boardService = new BoardService(mineServiceStub.Object, coordinateServiceStub.Object);
             boardService.Create(value);
             var board = boardService.GetBoard();
             Assert.Equal(board.Height, expectedOutput);
         }
 
-
-
-
-
         [Fact]
         public void CreateMines_EmptyBoard_ThrowsNullException()
         {
             var mineServiceStub = new Mock<IMineService>();
             var coordinateServiceStub = new Mock<ICoordinateService>();
-            var turtleServiceStub = new Mock<ITurtleService>();
             var boardService = new BoardService(mineServiceStub.Object, coordinateServiceStub.Object);
             Assert.Throws<NullReferenceException>(() => boardService.CreateMines("0,0"));
         }
@@ -68,23 +58,10 @@ namespace Test
         {
             var mineServiceStub = new Mock<IMineService>();
             var coordinateServiceStub = new Mock<ICoordinateService>();
-            var turtleServiceStub = new Mock<ITurtleService>();
             var boardService = new BoardService(mineServiceStub.Object, coordinateServiceStub.Object);
             boardService.Create("0 0");
             Assert.Throws<Exception>(() => boardService.CreateMines("1,1"));
         }
-
-
-        //[Fact]
-        //public void CreateMines_MineExistsInLocation_ThrowsNullException()
-        //{
-        //    var mineServiceStub = new Mock<IMineService>();
-        //    var coordinateServiceStub = new Mock<ICoordinateService>();
-        //    var turtleServiceStub = new Mock<ITurtleService>();
-        //    var boardService = new BoardService(mineServiceStub.Object, coordinateServiceStub.Object);
-        //    boardService.Create("0 0");
-        //    Assert.Throws<Exception>(() => boardService.CreateMines("1,1 1,1"));
-        //}
 
         [Theory]
         [InlineData("5 4", "1,1 1,3 3,3", new[] { 1, 1 }, new[] { 1, 3 }, new[] { 3, 3 }, 3)]
@@ -99,7 +76,6 @@ namespace Test
                 .Returns(new Mine { Position = new Coordinate { X = mineInput3[0], Y = mineInput3[1] } });
             var coordinateServiceStub = new Mock<ICoordinateService>();
 
-            var turtleServiceStub = new Mock<ITurtleService>();
             var boardService = new BoardService(mineServiceStub.Object, coordinateServiceStub.Object);
 
             boardService.Create(boardInput);
@@ -109,15 +85,11 @@ namespace Test
             Assert.Equal(expectedResult, result);
         }
 
-
-
-
         [Fact]
         public void CreateExit_EmptyBoard_ThrowsNullException()
         {
             var mineServiceStub = new Mock<IMineService>();
             var coordinateServiceStub = new Mock<ICoordinateService>();
-            var turtleServiceStub = new Mock<ITurtleService>();
             var boardService = new BoardService(mineServiceStub.Object, coordinateServiceStub.Object);
             Assert.Throws<NullReferenceException>(() => boardService.CreateExit("0 0"));
         }
@@ -129,12 +101,10 @@ namespace Test
             var coordinateServiceStub = new Mock<ICoordinateService>();
             coordinateServiceStub.Setup(x => x.Create(1, 1))
                 .Returns(new Coordinate { X = 1, Y = 1 });
-            var turtleServiceStub = new Mock<ITurtleService>();
             var boardService = new BoardService(mineServiceStub.Object, coordinateServiceStub.Object);
             boardService.Create("0 0");
             Assert.Throws<Exception>(() => boardService.CreateExit("1 1"));
         }
-
 
         [Fact]
         public void CreateExit_MineExistsInLocation_ThrowsNullException()
@@ -143,7 +113,6 @@ namespace Test
             var coordinateServiceStub = new Mock<ICoordinateService>();
             coordinateServiceStub.Setup(x => x.Create(1, 1))
                 .Returns(new Coordinate { X = 1, Y = 1 });
-            var turtleServiceStub = new Mock<ITurtleService>();
             var boardService = new BoardService(mineServiceStub.Object, coordinateServiceStub.Object);
 
             boardService.Create("0 0");
@@ -157,7 +126,6 @@ namespace Test
             var mineServiceStub = new Mock<IMineService>();
             var coordinateServiceStub = new Mock<ICoordinateService>();
             coordinateServiceStub.Setup(x => x.Create(0, 0)).Returns(new Coordinate { X = 0, Y = 0 });
-            var turtleServiceStub = new Mock<ITurtleService>();
             var boardService = new BoardService(mineServiceStub.Object, coordinateServiceStub.Object);
             boardService.Create("0 0");
             boardService.CreateExit("0 0");
@@ -172,7 +140,6 @@ namespace Test
             var mineServiceStub = new Mock<IMineService>();
             var coordinateServiceStub = new Mock<ICoordinateService>();
             coordinateServiceStub.Setup(x => x.Create(exitCoordinateX, exitCoordinateY)).Returns(new Coordinate { X = exitCoordinateX, Y = exitCoordinateY });
-            var turtleServiceStub = new Mock<ITurtleService>();
             var boardService = new BoardService(mineServiceStub.Object, coordinateServiceStub.Object);
             boardService.Create(boardDimension);
 
@@ -188,17 +155,11 @@ namespace Test
             var mineServiceStub = new Mock<IMineService>();
             var coordinateServiceStub = new Mock<ICoordinateService>();
             coordinateServiceStub.Setup(x => x.Create(exitCoordinateX, exitCoordinateY)).Returns(new Coordinate { X = exitCoordinateX, Y = exitCoordinateY });
-            var turtleServiceStub = new Mock<ITurtleService>();
             var boardService = new BoardService(mineServiceStub.Object, coordinateServiceStub.Object);
             boardService.Create(boardDimension);
-
             boardService.CreateExit(exitCoordinate);
             var result = boardService.GetBoard().ExitPoint.Y;
             Assert.Equal(exitCoordinateY, result);
         }
-
-
-
-
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Helper.Enums
 {
-    public enum Status
+    public enum TurtleStatus
     {
         [Display(Name = "Still in Danger")]
         InDanger,

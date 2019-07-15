@@ -1,15 +1,11 @@
-﻿using System;
-using Helper.Enums;
+﻿using Helper.Enums;
 using Helper.Helpers;
-using Moq;
-using Service;
 using Xunit;
 
 namespace Test
 {
     public class HelperTests
     {
-
         [Theory]
         [InlineData("5 4 ", new[] { "5", "4" })]
         public void StringValue_ReturnsStringArray(string stringValue, string[] array)
@@ -35,25 +31,21 @@ namespace Test
             Assert.Equal(array, result);
         }
 
-
         [Theory]
         [InlineData("N", Orientation.North)]
         [InlineData("W", Orientation.West)]
         [InlineData("E", Orientation.East)]
         [InlineData("S", Orientation.South)]
-       
         public void GetValueFromName_ReturnsOrientationEnumName(string name, Orientation expected)
         {
             var result = EnumHelper<Orientation>.GetValueFromName(name);
             Assert.Equal(expected,result);
         }
 
-
         [Theory]
         [InlineData("L", Movement.Left)]
         [InlineData("M", Movement.Move)]
         [InlineData("R", Movement.Right)]
-
         public void GetValueFromName_ReturnsMovementEnumName(string name, Movement expected)
         {
             var result = EnumHelper<Movement>.GetValueFromName(name);

@@ -4,13 +4,11 @@ using Helper.Enums;
 using Moq;
 using Service;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Test
 {
     public class TurtleTests
     {
-
         [Fact]
         public void CreateTurtle_ReturnNotNull()
         {
@@ -54,7 +52,6 @@ namespace Test
             Assert.Equal(Orientation.East, result);
         }
 
-
         [Theory]
         [InlineData(Orientation.North, Orientation.West)]
         [InlineData(Orientation.West, Orientation.South)]
@@ -71,7 +68,6 @@ namespace Test
             Assert.Equal(expectedOrientation, result);
         }
 
-
         [Theory]
         [InlineData(Orientation.North, Orientation.East)]
         [InlineData(Orientation.West, Orientation.North)]
@@ -87,7 +83,6 @@ namespace Test
             var result = turtle.Orientation;
             Assert.Equal(expectedOrientation, result);
         }
-
 
         [Theory]
         [InlineData(1, 1, Orientation.North, 1)]
@@ -106,7 +101,6 @@ namespace Test
             Assert.Equal(expectedResult, result);
         }
 
-
         [Theory]
         [InlineData(1, 1, Orientation.North)]
         [InlineData(1, 1, Orientation.West)]
@@ -122,7 +116,7 @@ namespace Test
             var turtle = turtleService.Create(new Coordinate { X = x, Y = y }, direction);
             turtleService.Move("M");
             var result = turtle.Status;
-            Assert.Equal(Status.Dead, result);
+            Assert.Equal(TurtleStatus.Dead, result);
         }
 
         [Theory]
@@ -140,9 +134,8 @@ namespace Test
             var turtle = turtleService.Create(new Coordinate { X = x, Y = y }, direction);
             turtleService.Move("M");
             var result = turtle.Status;
-            Assert.Equal(Status.Freed, result);
+            Assert.Equal(TurtleStatus.Freed, result);
         }
-
 
         [Theory]
         [InlineData(1, 1, Orientation.North)]
@@ -158,10 +151,8 @@ namespace Test
             var turtle = turtleService.Create(new Coordinate { X = x, Y = y }, direction);
             turtleService.Move("M");
             var result = turtle.Status;
-            Assert.Equal(Status.InDanger, result);
+            Assert.Equal(TurtleStatus.InDanger, result);
         }
-
-
 
         [Theory]
         [InlineData(1, 1, Orientation.North)]
@@ -179,7 +170,6 @@ namespace Test
             Assert.Throws<InvalidOperationException>(() => turtleService.Move("M"));
         }
 
-
         [Theory]
         [InlineData(1, 1, Orientation.North)]
         public void GetStatus_ReturnsStatus(int x, int y, Orientation direction)
@@ -192,8 +182,6 @@ namespace Test
             var result = turtleService.GetStatus();
             Assert.Equal("Still in Danger",result);
         }
-
-
 
         [Fact]
         public void CreateTurtle_EmptyBoard_ThrowsNullException()
@@ -217,27 +205,5 @@ namespace Test
           
             Assert.Throws<Exception>(() => turtleService.CreateTurtle("1 1 N"));
         }
-
-        //[Fact]
-        //public void CreateTurtle_BoardAlreadyInitialized_ThrowsException()
-        //{
-        //    //var mineServiceStub = new Mock<IMineService>();
-        //    //var coordinateServiceStub = new Mock<ICoordinateService>();
-        //    //coordinateServiceStub.Setup(x => x.Create(0, 0))
-        //    //    .Returns(new Coordinate { X = 0, Y = 0 });
-        //    //coordinateServiceStub.Setup(x => x.Create(1, 1))
-        //    //    .Returns(new Coordinate { X = 1, Y = 1 });
-        //    //var turtleServiceStub = new Mock<ITurtleService>();
-        //    //var boardService = new BoardService(mineServiceStub.Object, coordinateServiceStub.Object);
-
-
-        //    var boardServiceStub = new Mock<IBoardService>();
-        //    boardServiceStub.Setup(x => x.Create(It.IsAny<string>()));
-        //    var coordinateServiceStub = new Mock<ICoordinateService>();
-        //    var turtleService = new TurtleService(boardServiceStub.Object, coordinateServiceStub.Object);
-         
-        //    turtleService.CreateTurtle("0 0 N");
-        //    Assert.Throws<Exception>(() => turtleService.CreateTurtle("1 1 N"));
-        //}
     }
 }
