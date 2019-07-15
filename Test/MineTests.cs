@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Helper.Enums;
 using Moq;
 using Service;
 using Xunit;
@@ -50,6 +51,18 @@ namespace Test
             var mine = mineService.CreateMine(mineInput);
             var result = mine.Position.Y;
             Assert.Equal(result, expectedValue);
+        }
+
+        [Fact]
+        public void DetonateMine_ReturnsDetonatedStatus()
+        {
+            var coordinateServiceStub = new Mock<ICoordinateService>();
+            coordinateServiceStub.Setup(x => x.Create(0, 0))
+                .Returns(new Coordinate { X = 0, Y = 0 });
+            var mineService = new MineService(coordinateServiceStub.Object);
+            var mine = mineService.CreateMine(new[] { 0, 0 });
+            mineService.Detonate(mine);
+            Assert.Equal(MineStatus.Detonated,mine.Status);
         }
 
     }

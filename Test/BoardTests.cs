@@ -8,6 +8,15 @@ namespace Test
 {
     public class BoardTests
     {
+        [Fact]
+        public void Create_Zero_ReturnsInvalidException()
+        {
+            var mineServiceStub = new Mock<IMineService>();
+            var coordinateServiceStub = new Mock<ICoordinateService>();
+            var boardService = new BoardService(mineServiceStub.Object, coordinateServiceStub.Object);;
+            Assert.Throws<InvalidOperationException>(() => boardService.Create("0 0"));
+        }
+
         [Theory]
         [InlineData("5 4 ")]
         public void GetBoard_StringCommand_ReturnsBoard(string value)
@@ -59,8 +68,8 @@ namespace Test
             var mineServiceStub = new Mock<IMineService>();
             var coordinateServiceStub = new Mock<ICoordinateService>();
             var boardService = new BoardService(mineServiceStub.Object, coordinateServiceStub.Object);
-            boardService.Create("0 0");
-            Assert.Throws<Exception>(() => boardService.CreateMines("1,1"));
+            boardService.Create("1 1");
+            Assert.Throws<Exception>(() => boardService.CreateMines("2,2"));
         }
 
         [Theory]
@@ -99,11 +108,11 @@ namespace Test
         {
             var mineServiceStub = new Mock<IMineService>();
             var coordinateServiceStub = new Mock<ICoordinateService>();
-            coordinateServiceStub.Setup(x => x.Create(1, 1))
-                .Returns(new Coordinate { X = 1, Y = 1 });
+            coordinateServiceStub.Setup(x => x.Create(2, 2))
+                .Returns(new Coordinate { X = 2, Y = 2 });
             var boardService = new BoardService(mineServiceStub.Object, coordinateServiceStub.Object);
-            boardService.Create("0 0");
-            Assert.Throws<Exception>(() => boardService.CreateExit("1 1"));
+            boardService.Create("1 1");
+            Assert.Throws<Exception>(() => boardService.CreateExit("2 2"));
         }
 
         [Fact]
@@ -111,13 +120,13 @@ namespace Test
         {
             var mineServiceStub = new Mock<IMineService>();
             var coordinateServiceStub = new Mock<ICoordinateService>();
-            coordinateServiceStub.Setup(x => x.Create(1, 1))
-                .Returns(new Coordinate { X = 1, Y = 1 });
+            coordinateServiceStub.Setup(x => x.Create(2, 2))
+                .Returns(new Coordinate { X = 2, Y = 2 });
             var boardService = new BoardService(mineServiceStub.Object, coordinateServiceStub.Object);
 
-            boardService.Create("0 0");
-            boardService.CreateMines("0,0");
-            Assert.Throws<Exception>(() => boardService.CreateExit("1 1"));
+            boardService.Create("1 1");
+            boardService.CreateMines("1,1");
+            Assert.Throws<Exception>(() => boardService.CreateExit("2 2"));
         }
 
         [Fact]
@@ -127,7 +136,7 @@ namespace Test
             var coordinateServiceStub = new Mock<ICoordinateService>();
             coordinateServiceStub.Setup(x => x.Create(0, 0)).Returns(new Coordinate { X = 0, Y = 0 });
             var boardService = new BoardService(mineServiceStub.Object, coordinateServiceStub.Object);
-            boardService.Create("0 0");
+            boardService.Create("1 1");
             boardService.CreateExit("0 0");
             var result = boardService.GetBoard().ExitPoint;
             Assert.NotNull(result);
@@ -161,5 +170,7 @@ namespace Test
             var result = boardService.GetBoard().ExitPoint.Y;
             Assert.Equal(exitCoordinateY, result);
         }
+
+        
     }
 }

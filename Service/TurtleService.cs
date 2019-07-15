@@ -111,7 +111,10 @@ namespace Service
             var mineHit = _boardService.MineExistsInLocation(_turtle.Position.X, _turtle.Position.Y);
             if (mineHit)
             {
+                //Update Turtle Status
                 _turtle.Status = TurtleStatus.Dead;
+                //Update Mine Status
+                _boardService.DetonateMineAtLocation(_turtle.Position.X, _turtle.Position.Y);
                 return;
             }
             //Check if the turtle has found the exit

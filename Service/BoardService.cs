@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Domain;
+using Helper.Enums;
 using Helper.Helpers;
 
 
@@ -17,6 +18,7 @@ namespace Service
         bool PositionInRange(int x, int y);
         Exception ValidPosition(Coordinate coordinate, string name);
         Board GetBoard();
+        void DetonateMineAtLocation(int positionX, int positionY);
     }
     public class BoardService : IBoardService
     {
@@ -39,6 +41,10 @@ namespace Service
 
             var width = boardSizeCoordinates[0];
             var height = boardSizeCoordinates[1];
+
+            if (width <= 0 || height <= 0)
+                throw new InvalidOperationException("Board Size Values Should Be Greater Than Zero.");
+
             _board = new Board
             {
                 Width = width,
@@ -49,9 +55,6 @@ namespace Service
         public void CreateMines(string command)
         {
             var coordinates = command.ToTwoDimensionalIntArray(' ', ',');
-            //var duplicateExists = coordinates.HasDuplicateValues();
-            //if (duplicateExists)
-            //    throw new Exception($"You cannot put two mines at the same location. Please check your mine coordinates.");
             if (!BoardExists())
                 throw new NullReferenceException("No board has been found. Please initialize the board before adding mines.");
 
@@ -63,6 +66,10 @@ namespace Service
                 var mineIsInRange = PositionInRange(x, y);
                 if (!mineIsInRange)
                     throw new Exception($"The position of the mine is not in the range of the board!");
+                var mineExists = MineExistsInLocation(x, y);
+                if (mineExists)
+                    throw new Exception($"You cannot put two mines at the same location. Please check your mine coordinates.");
+
                 var mine = _mineService.CreateMine(mineCoordinate);
                 _board.Mines.Add(mine);
             }
@@ -85,9 +92,9 @@ namespace Service
 
         public bool MineExistsInLocation(int x, int y)
         {
-            return _board.Mines != null && _board.Mines.Count > 0 && _board.Mines.Any(z => z.Position.X == x && z.Position.Y == y);
+            return _board.Mines != null && _board.Mines.Count > 0 && _board.Mines.Any(z => z.Position.X == x && z.Position.Y == y && z.Status == MineStatus.Active);
         }
-        public bool ExitExistsInLocation(int x,int y)
+        public bool ExitExistsInLocation(int x, int y)
         {
             return _board.ExitPoint != null && _board.ExitPoint.X == x && _board.ExitPoint.Y == y;
         }
@@ -96,6 +103,13 @@ namespace Service
         {
             return _board;
         }
+
+        public void DetonateMineAtLocation(int positionX, int positionY)
+        {
+            var mine = _board.Mines.FirstOrDefault(x => x.Position.X == positionX && x.Position.Y == positionY);
+            _mineService.Detonate(mine);
+        }
+
         public bool PositionInRange(int x, int y)
         {
             return _board.Width >= x && _board.Height >= y;

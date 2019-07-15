@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using Domain;
-using Helper.Helpers;
+﻿using Domain;
+using Helper.Enums;
 
 namespace Service
 {
     public interface IMineService
     {
-
         Mine CreateMine(int[] mineCoordinates);
+        void Detonate(Mine mine);
     }
     public class MineService : IMineService
     {
@@ -27,9 +23,16 @@ namespace Service
 
             var mine = new Mine
             {
-                Position = _coordinateService.Create(x, y)
+                Position = _coordinateService.Create(x, y),
+                Status = MineStatus.Active
             };
+
             return mine;
+        }
+
+        public void Detonate(Mine mine)
+        {
+            mine.Status = MineStatus.Detonated;
         }
     }
 }
