@@ -36,6 +36,11 @@ namespace Service
         }
         public void CreateTurtle(string command)
         {
+            var validCommand = command.IsSpaceDelimitedNumbersAndChar();
+            if (!validCommand)
+                throw new FormatException("Exit Input Is Not Valid.");
+
+
             var array = command.ToStringArray(' ');
             var turtleStartingCoordinate = _coordinateService.Create(Convert.ToInt32(array[0]), Convert.ToInt32(array[1]));
 
@@ -58,6 +63,10 @@ namespace Service
         }
         public void Move(string command)
         {
+            var validCommand = command.IsSpaceDelimitedLetters("LMR");
+            if (!validCommand)
+                throw new FormatException("Turtle Input Is Not Valid.");
+
             var array = command.ToStringArray(' ');
             foreach (var move in array)
             {

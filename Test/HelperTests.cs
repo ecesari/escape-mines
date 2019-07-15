@@ -51,6 +51,51 @@ namespace Test
             var result = EnumHelper<Movement>.GetValueFromName(name);
             Assert.Equal(expected, result);
         }
+
+        [Theory]
+        [InlineData("0 0", true)]
+        [InlineData("5 4", true)]
+        [InlineData("0 0 N", false)]
+        [InlineData("0 0,1", false)]
+        public void IsSpaceDelimitedNumbers_StringInput(string input, bool expectedValue)
+        {
+           var result = input.IsSpaceDelimitedNumbers();
+           Assert.Equal(expectedValue,result);
+        }
+
+        [Theory]
+        [InlineData("1,1 1,3 3,3", true)]
+        [InlineData("0 0 N", false)]
+        [InlineData("1 1 1 1 1", false)]
+        public void IsSpaceDelimitedArrays_StringInput(string input, bool expectedValue)
+        {
+            var result = input.IsSpaceDelimitedArrays();
+            Assert.Equal(expectedValue, result);
+        }
+
+        [Theory]
+        [InlineData("R M R M L L", true)]
+        [InlineData("R", true)]
+        [InlineData("R M R ML L", false)]
+        [InlineData("0 0 N", false)]
+        [InlineData("0 0,1", false)]
+        [InlineData("1,1 1,3 3,3", false)]
+        public void IsSpaceDelimitedLetters_StringInput(string input, bool expectedValue)
+        {
+            var result = input.IsSpaceDelimitedLetters("LMR");
+            Assert.Equal(expectedValue, result);
+        }
+
+
+        [Theory]
+        [InlineData("1,1 1,3 3,3", false)]
+        [InlineData("0 0 N", true)]
+        [InlineData("1 1 1 1 1", false)]
+        public void IsSpaceDelimitedNumbersAndChar_ReturnTrue(string input, bool expectedValue)
+        {
+            var result = input.IsSpaceDelimitedNumbersAndChar();
+            Assert.Equal(expectedValue, result);
+        }
     }
 }
 

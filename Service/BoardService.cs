@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Domain;
 using Helper.Enums;
 using Helper.Helpers;
@@ -34,6 +35,11 @@ namespace Service
 
         public void Create(string command)
         {
+            //Check Command Format
+            var validCommand = command.IsSpaceDelimitedNumbers();
+            if (!validCommand)
+                throw new FormatException("Board Input Is Not Valid.");
+
             var boardSizeCoordinates = command.ToIntArray(' ');
             //Singleton
             if (BoardExists())
@@ -54,6 +60,10 @@ namespace Service
         }
         public void CreateMines(string command)
         {
+            var validCommand = command.IsSpaceDelimitedArrays();
+            if (!validCommand)
+                throw new FormatException("Mine Input Is Not Valid.");
+
             var coordinates = command.ToTwoDimensionalIntArray(' ', ',');
             if (!BoardExists())
                 throw new NullReferenceException("No board has been found. Please initialize the board before adding mines.");
@@ -76,6 +86,10 @@ namespace Service
         }
         public void CreateExit(string command)
         {
+            var validCommand = command.IsSpaceDelimitedNumbers();
+            if (!validCommand)
+                throw new FormatException("Exit Input Is Not Valid.");
+
             var exit = command.ToIntArray(' ');
             var exitCoordinate = _coordinateService.Create(exit[0], exit[1]);
 

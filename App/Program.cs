@@ -20,11 +20,19 @@ namespace EscapeMine
             var turtleService = _serviceProvider.GetService<ITurtleService>();
 
             //Enter Commands
-            boardService.Create(settings[0]);
-            boardService.CreateMines(settings[1]);
-            boardService.CreateExit(settings[2]);
-            turtleService.CreateTurtle(settings[3]);
-            turtleService.Move(settings[4]); 
+            try
+            {
+                boardService.Create(settings[0]);
+                boardService.CreateMines(settings[1]);
+                boardService.CreateExit(settings[2]);
+                turtleService.CreateTurtle(settings[3]);
+                turtleService.Move(settings[4]);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.ReadLine();
+            }
             
             //Get Result
             var result = turtleService.GetStatus();
