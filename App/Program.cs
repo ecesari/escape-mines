@@ -8,7 +8,7 @@ namespace EscapeMine
     class Program
     {
         private static IServiceProvider _serviceProvider;
-        
+
         static void Main()
         {
             RegisterServices();
@@ -33,7 +33,7 @@ namespace EscapeMine
                 Console.WriteLine(ex.Message);
                 Console.ReadLine();
             }
-            
+
             //Get Result
             var result = turtleService.GetStatus();
             Console.WriteLine(result);
@@ -43,10 +43,10 @@ namespace EscapeMine
         private static void RegisterServices()
         {
             var collection = new ServiceCollection();
-            collection.AddScoped<IBoardService, BoardService>();
-            collection.AddScoped<ITurtleService, TurtleService>();
-            collection.AddScoped<IMineService, MineService>();
-            collection.AddScoped<ICoordinateService, CoordinateService>();
+            collection.AddSingleton<IBoardService, BoardService>();
+            collection.AddSingleton<ITurtleService, TurtleService>();
+            collection.AddSingleton<IMineService, MineService>();
+            collection.AddSingleton<ICoordinateService, CoordinateService>();
             _serviceProvider = collection.BuildServiceProvider();
         }
     }
