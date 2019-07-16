@@ -16,10 +16,10 @@ namespace Service
         void CreateExit(string command);
         bool MineExistsInLocation(int x, int y);
         bool ExitExistsInLocation(int x, int y);
+        void DetonateMineAtLocation(int positionX, int positionY);
         bool PositionInRange(int x, int y);
         Exception ValidPosition(Coordinate coordinate, string name);
         Board GetBoard();
-        void DetonateMineAtLocation(int positionX, int positionY);
     }
     public class BoardService : IBoardService
     {
@@ -112,21 +112,18 @@ namespace Service
         {
             return _board.ExitPoint != null && _board.ExitPoint.X == x && _board.ExitPoint.Y == y;
         }
-
-        public Board GetBoard()
-        {
-            return _board;
-        }
-
         public void DetonateMineAtLocation(int positionX, int positionY)
         {
             var mine = _board.Mines.FirstOrDefault(x => x.Position.X == positionX && x.Position.Y == positionY);
             _mineService.Detonate(mine);
         }
-
         public bool PositionInRange(int x, int y)
         {
             return _board.Width >= x && _board.Height >= y;
+        }
+        public Board GetBoard()
+        {
+            return _board;
         }
         public Exception ValidPosition(Coordinate position, string objectName)
         {

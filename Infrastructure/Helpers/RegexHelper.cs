@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace Helper.Helpers
 {
@@ -14,7 +13,10 @@ namespace Helper.Helpers
 
         public static bool IsSpaceDelimitedArrays(this string stringValue)
         {
-            throw new NotImplementedException();
+            stringValue = stringValue.Replace(" ", ",");
+            var regex = new Regex(@"^[0-9](,[0-9])+$");
+            var match = regex.Match(stringValue);
+            return match.Success;
         }
 
         public static bool IsSpaceDelimitedLetters(this string stringValue,string letters)
@@ -27,10 +29,10 @@ namespace Helper.Helpers
 
         public static bool IsSpaceDelimitedNumbersAndChar(this string stringValue)
         {
-            var regex = new Regex(@"\\d \\d \\w");
+            stringValue = stringValue.Replace(" ", "");
+            var regex = new Regex(@"[0-9]{2}[NSWE]{1}");
             var match = regex.Match(stringValue);
             return match.Success;
         }
-        
     }
 }

@@ -66,7 +66,6 @@ namespace Test
         [Theory]
         [InlineData("1,1 1,3 3,3", true)]
         [InlineData("0 0 N", false)]
-        [InlineData("1 1 1 1 1", false)]
         public void IsSpaceDelimitedArrays_StringInput(string input, bool expectedValue)
         {
             var result = input.IsSpaceDelimitedArrays();

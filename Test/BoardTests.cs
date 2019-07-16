@@ -18,7 +18,7 @@ namespace Test
         }
 
         [Theory]
-        [InlineData("5 4 ")]
+        [InlineData("5 4")]
         public void GetBoard_StringCommand_ReturnsBoard(string value)
         {
             var mineServiceStub = new Mock<IMineService>();
@@ -30,7 +30,7 @@ namespace Test
         }
 
         [Theory]
-        [InlineData("5 4 ", 5)]
+        [InlineData("5 4", 5)]
         public void GetBoard_StringCommand_ReturnsBoardWidth(string value, int expectedOutput)
         {
             var mineServiceStub = new Mock<IMineService>();
@@ -42,7 +42,7 @@ namespace Test
         }
 
         [Theory]
-        [InlineData("5 4 ", 4)]
+        [InlineData("5 4", 4)]
         public void GetBoard_StringCommand_ReturnsBoardHeight(string value, int expectedOutput)
         {
             var mineServiceStub = new Mock<IMineService>();
@@ -59,7 +59,7 @@ namespace Test
             var mineServiceStub = new Mock<IMineService>();
             var coordinateServiceStub = new Mock<ICoordinateService>();
             var boardService = new BoardService(mineServiceStub.Object, coordinateServiceStub.Object);
-            Assert.Throws<NullReferenceException>(() => boardService.CreateMines("0,0"));
+            Assert.Throws<NullReferenceException>(() => boardService.CreateMines("0,0 0,0"));
         }
 
         [Fact]
@@ -143,7 +143,7 @@ namespace Test
         }
 
         [Theory]
-        [InlineData("4 2 ", 4, 2, "5 5")]
+        [InlineData("4 2", 4, 2, "5 5")]
         public void CreateExit_StringCommand_ReturnsExitCoordinateX(string exitCoordinate, int exitCoordinateX, int exitCoordinateY, string boardDimension)
         {
             var mineServiceStub = new Mock<IMineService>();
@@ -158,7 +158,7 @@ namespace Test
         }
 
         [Theory]
-        [InlineData("4 2 ", 4, 2, "5 5")]
+        [InlineData("4 2", 4, 2, "5 5")]
         public void CreateExit_StringCommand_ReturnsExitCoordinateY(string exitCoordinate, int exitCoordinateX, int exitCoordinateY, string boardDimension)
         {
             var mineServiceStub = new Mock<IMineService>();

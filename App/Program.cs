@@ -8,7 +8,7 @@ namespace EscapeMine
     class Program
     {
         private static IServiceProvider _serviceProvider;
-
+        
         static void Main()
         {
             RegisterServices();
